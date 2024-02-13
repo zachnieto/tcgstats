@@ -1,4 +1,4 @@
-import * as React from "react";
+import {useState} from "react";
 
 
 const getColor = (value: number) => {
@@ -26,15 +26,39 @@ const getColor = (value: number) => {
     return `rgb(${blendedRGB[0]}, ${blendedRGB[1]}, ${blendedRGB[2]})`;
 }
 
+type CardStats = {
+    winrate: string,
+    wins_against: number,
+    losses_against: number,
+    games: number,
+    winrate_value: number
+}
 
-const GridElement = () => {
+const GridElement = ({ data }: {
+    data: CardStats
+}) => {
+    const [expanded, setExpanded] = useState(false)
 
-    const percentage = Math.random() * 100;
+    console.log(data);
 
     return (
-        <div style={{ height: 100, width: 100, backgroundColor: getColor(percentage) }}
-             className="border-solid border border-sky-500 bg-stone-800 flex justify-center items-center">
-            <h1 className="text-3xl text-black font-bold">{percentage.toFixed(1)}%</h1>
+        <div style={{ height: 100, width: 100, transform: expanded ? `scale(1.5)` : '',
+            backgroundColor: getColor(data["winrate_value"] * 100) }}
+             className="border-solid border border-black bg-stone-800 flex justify-center items-center ease-in-out duration-100 cursor-pointer flex-col"
+            onMouseEnter={() => setExpanded(true)}
+             onMouseLeave={() => setExpanded(false)}
+        >
+            {
+                expanded ? <>
+                    <h1 className="text-xs text-black font-bold">WR: {data["winrate"]}</h1>
+                    <h1 className="text-xs text-black font-bold">Wins: {data["wins_against"]}</h1>
+                    <h1 className="text-xs text-black font-bold">Losses: {data["losses_against"]}</h1>
+                    <h1 className="text-xs text-black font-bold">Games: {data["games"]}</h1>
+                </>
+                    :
+
+                    <h1 className="text-2xl text-black font-bold">{data["winrate"]}</h1>
+            }
         </div>
     )
 }
