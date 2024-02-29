@@ -34,30 +34,27 @@ type CardStats = {
     winrate_value: number
 }
 
-const GridElement = ({ data }: {
+const GridElement = ({ data, advancedStats }: {
     data: CardStats
+    advancedStats: boolean
 }) => {
-    const [expanded, setExpanded] = useState(false)
-
-    console.log(data);
+    const { winrate_value = 0, winrate = 0, wins_against = 0, losses_against = 0, games = 0 } = data || {};
 
     return (
-        <div style={{ height: 100, width: 100, transform: expanded ? `scale(1.5)` : '',
-            backgroundColor: getColor(data["winrate_value"] * 100) }}
-             className="border-solid border border-black bg-stone-800 flex justify-center items-center ease-in-out duration-100 cursor-pointer flex-col"
-            onMouseEnter={() => setExpanded(true)}
-             onMouseLeave={() => setExpanded(false)}
+        <div style={{ height: 100, width: 100,
+            backgroundColor: getColor(winrate_value * 100) }}
+             className="border-solid border border-black bg-stone-800 flex justify-center items-center ease-in-out duration-100 flex-col"
         >
             {
-                expanded ? <>
-                    <h1 className="text-xs text-black font-bold">WR: {data["winrate"]}</h1>
-                    <h1 className="text-xs text-black font-bold">Wins: {data["wins_against"]}</h1>
-                    <h1 className="text-xs text-black font-bold">Losses: {data["losses_against"]}</h1>
-                    <h1 className="text-xs text-black font-bold">Games: {data["games"]}</h1>
+                advancedStats ? <>
+                    <h1 className="text-xs text-black font-bold">WR: {winrate}</h1>
+                    <h1 className="text-xs text-black font-bold">Wins: {wins_against}</h1>
+                    <h1 className="text-xs text-black font-bold">Losses: {losses_against}</h1>
+                    <h1 className="text-xs text-black font-bold">Games: {games}</h1>
                 </>
                     :
 
-                    <h1 className="text-2xl text-black font-bold">{data["winrate"]}</h1>
+                    <h1 className="text-2xl text-black font-bold">{winrate}</h1>
             }
         </div>
     )
