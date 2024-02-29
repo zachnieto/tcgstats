@@ -1,5 +1,3 @@
-import {useState} from "react";
-
 
 const getColor = (value: number) => {
     // Clamp the value between 0 and 100
